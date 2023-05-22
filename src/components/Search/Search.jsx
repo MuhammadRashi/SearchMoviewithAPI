@@ -7,8 +7,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from "axios";
 import { SearchList } from './SearchList/SearchList';
-const API_URL =
-    "https://api.themoviedb.org/3/search/movie?api_key=d3449ff6ec0c027623bf6b6f5fff78b3&language=en-US&page=1&include_adult=false";
+const API_URL = "http://localhost:3005";
+const API_POST_URL="http://localhost:3005/api/movies"
+// const API_URL =
+//     "https://api.themoviedb.org/3/search/movie?api_key=d3449ff6ec0c027623bf6b6f5fff78b3&language=en-US&page=1&include_adult=false";
 
 
 export const Search = () => {
@@ -25,12 +27,12 @@ export const Search = () => {
         try {
             const response = await axios(API_URL, {
                 params: {
-                    query: searchInputValue,
+                    movieName: searchInputValue,
                 },
             });
             // Saving to local array to filter locally
             // setFilteredList(response.data.results);
-            setSearchList(response.data.results);
+            setSearchList(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -53,6 +55,24 @@ export const Search = () => {
     //     fetchSearchList("movie");
     // }, []);
 
+    //-----------
+      const submitMovie=async()=>{
+        try {
+            const response = await axios(API_POST_URL,{
+                method:"POST",
+                data:{
+                    movieName:searchInputValue,
+                },
+            });
+            setSearchList(response.data)
+        } catch (error) {
+            console.error(error);
+            
+        }
+      }
+
+    //--------
+
 
     const clearSearch = () => {
         setSearchInputValue("");
@@ -72,6 +92,7 @@ export const Search = () => {
                 </div>
                 <SearchInput handleChange={handleChange} searchList={searchList} searchInputValue={searchInputValue} clearSearch={clearSearch}/>
                 <SearchList searchList={searchList}/>
+                <button onClick={submitMovie}>Add Movie</button>
             </div>
 
         </Fragment>

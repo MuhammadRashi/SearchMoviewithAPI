@@ -1,9 +1,10 @@
 import React from "react";
 import "./SearchList.css";
 export const SearchList = ({ searchList }) => {
+    
   return (
     <div className="search-list-container">
-      { searchList !== null && searchList.map((data) => (
+      {searchList !=null && searchList.map((data) => (
         <div className="search-items" key={data.id}>
           <img
             width="50"
